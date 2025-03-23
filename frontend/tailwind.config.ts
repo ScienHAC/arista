@@ -58,6 +58,11 @@ const config = {
 					DEFAULT: "hsl(var(--card))",
 					foreground: "hsl(var(--card-foreground))",
 				},
+				arista: {
+					orange: "#FF7A00",
+					gold: "#FFD700",
+					silver: "#C0C0C0",
+				},
 			},
 			borderRadius: {
 				lg: "var(--radius)",
@@ -105,6 +110,20 @@ const config = {
 					from: { transform: 'translateX(-100%)' },
 					to: { transform: 'translateX(0)' },
 				},
+				"pulse-ring": {
+					"0%": { transform: "scale(0.8)", opacity: "0" },
+					"50%": { opacity: "0.5" },
+					"100%": { transform: "scale(1.5)", opacity: "0" },
+				},
+				ripple: {
+					"0%": { transform: "scale(0)", opacity: "1" },
+					"100%": { transform: "scale(4)", opacity: "0" },
+				},
+				thinking: {
+					"0%": { opacity: "0.3" },
+					"50%": { opacity: "1" },
+					"100%": { opacity: "0.3" },
+				},
 			},
 			animation: {
 				"accordion-down": "accordion-down 0.2s ease-out",
@@ -117,6 +136,9 @@ const config = {
 				"fade-in": "fade-in 0.5s ease-out",
 				'infinite-scroll': 'infinite-scroll 60s linear infinite',
 				'infinite-scroll-reverse': 'infinite-scroll-reverse 72s linear infinite',
+				"pulse-ring": "pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite",
+				ripple: "ripple 1s linear forwards",
+				thinking: "thinking 1.5s ease-in-out infinite",
 			},
 		},
 	},

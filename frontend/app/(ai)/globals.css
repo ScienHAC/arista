@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 30 20% 97%;
+    --foreground: 30 10% 10%;
+
+    --card: 30 20% 98%;
+    --card-foreground: 30 10% 10%;
+
+    --popover: 30 20% 98%;
+    --popover-foreground: 30 10% 10%;
+
+    --primary: 32 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 45 100% 50%;
+    --secondary-foreground: 0 0% 10%;
+
+    --muted: 30 10% 90%;
+    --muted-foreground: 30 10% 40%;
+
+    --accent: 30 10% 90%;
+    --accent-foreground: 30 10% 10%;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 30 10% 85%;
+    --input: 30 10% 85%;
+    --ring: 32 100% 50%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 30 20% 10%;
+    --foreground: 30 10% 98%;
+
+    --card: 30 20% 8%;
+    --card-foreground: 30 10% 98%;
+
+    --popover: 30 20% 8%;
+    --popover-foreground: 30 10% 98%;
+
+    --primary: 32 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 45 100% 50%;
+    --secondary-foreground: 0 0% 10%;
+
+    --muted: 30 10% 20%;
+    --muted-foreground: 30 10% 60%;
+
+    --accent: 30 10% 20%;
+    --accent-foreground: 30 10% 98%;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 30 10% 25%;
+    --input: 30 10% 25%;
+    --ring: 32 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.glassmorphism {
+  @apply bg-white/10 backdrop-blur-md border border-white/20 shadow-lg;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-arista-orange via-arista-gold to-arista-silver;
+}
+
+.parallax-layer {
+  will-change: transform;
+}
+
+.ai-thinking-dot {
+  @apply inline-block h-2 w-2 rounded-full bg-arista-orange;
+}
+
+.ai-thinking-dot:nth-child(2) {
+  animation-delay: 0.2s;
+  @apply bg-arista-gold;
+}
+
+.ai-thinking-dot:nth-child(3) {
+  animation-delay: 0.4s;
+  @apply bg-arista-silver;
+}
+

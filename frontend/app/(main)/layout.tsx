@@ -1,6 +1,10 @@
 import type React from "react"
 import "@/app/globals.css"
 import { Inter } from "next/font/google"
+import { ThemeProvider } from "@/components/theme-provider"
+import Header from "@/components/header"
+import Footer from "@/components/footer"
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -13,7 +17,7 @@ export const metadata = {
     },
 }
 
-export default function RootLayout({
+export default function MainLayout({
     children,
 }: {
     children: React.ReactNode
@@ -21,7 +25,12 @@ export default function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
             <body className={inter.className}>
-                {children}
+                <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange={false}>
+                    <Header />
+                    {children}
+                    <Footer />
+                    <Toaster />
+                </ThemeProvider>
             </body>
         </html>
     )
