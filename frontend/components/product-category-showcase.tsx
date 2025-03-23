@@ -24,11 +24,6 @@ interface ProductCategoryShowcaseProps {
   viewAllLink: string
 }
 
-// Function to format numbers consistently
-const formatNumber = (num: number): string => {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
 export default function ProductCategoryShowcase({
   title,
   description,
@@ -106,10 +101,10 @@ export default function ProductCategoryShowcase({
                   <span className="text-sm text-muted-foreground">({product.reviewCount})</span>
                 </div>
                 <div className="flex items-center mb-3">
-                  <span className="font-bold text-lg text-gold">₹{formatNumber(product.price)}</span>
+                  <span className="font-bold text-lg text-gold">₹{product.price.toLocaleString()}</span>
                   {product.originalPrice && (
                     <span className="text-sm text-muted-foreground line-through ml-2">
-                      ₹{formatNumber(product.originalPrice)}
+                      ₹{product.originalPrice.toLocaleString()}
                     </span>
                   )}
                 </div>
@@ -136,3 +131,4 @@ export default function ProductCategoryShowcase({
     </section>
   )
 }
+

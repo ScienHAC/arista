@@ -41,7 +41,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Card
-      className="overflow-hidden h-full transition-all duration-300 hover:shadow-lg"
+      className="overflow-hidden h-full transition-all duration-300 hover:shadow-lg border-0 bg-white dark:bg-card"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -81,10 +81,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="font-bold text-lg text-gold">₹{product.price.toLocaleString()}</div>
       </CardContent>
       <CardFooter className="p-4 pt-0">
-        <Button
-          className="w-full group bg-gradient-to-r from-gold to-gold-light text-black hover:from-gold/90 hover:to-gold-light/90"
-          onClick={handleAddToCart}
-        >
+        <Button className="w-full group bg-gold text-black hover:bg-gold/90" onClick={handleAddToCart}>
           <ShoppingCart className="mr-2 h-4 w-4 transition-transform group-hover:scale-110" />
           Add to Cart
         </Button>

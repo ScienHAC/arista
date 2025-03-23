@@ -1,6 +1,7 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useRef } from "react"
+import { motion, useScroll, useTransform } from "framer-motion"
 import { Search, Phone, Luggage, Plane, User, Battery } from "lucide-react"
 
 const features = [
@@ -38,9 +39,52 @@ const features = [
 ]
 
 export default function SmartLuggageFeatures() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  })
+
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
+  const y = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [100, 0, 0, -100])
+
   return (
-    <section className="w-full py-16 md:py-24 bg-gradient-to-b from-background to-muted/30">
-      <div className="container mx-auto px-4">
+    <motion.section
+      ref={containerRef}
+      className="w-full py-20 md:py-28 bg-gradient-to-b from-background to-muted/30 relative overflow-hidden"
+      style={{ opacity, y }}
+    >
+      {/* Background decorative elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute top-20 left-10 w-64 h-64 rounded-full bg-gold/5"
+          animate={{
+            scale: [1, 1.2, 1],
+            x: [0, 20, 0],
+            y: [0, -20, 0],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Number.POSITIVE_INFINITY,
+            repeatType: "reverse",
+          }}
+        />
+        <motion.div
+          className="absolute bottom-40 right-20 w-80 h-80 rounded-full bg-gold/5"
+          animate={{
+            scale: [1, 1.3, 1],
+            x: [0, -30, 0],
+            y: [0, 30, 0],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Number.POSITIVE_INFINITY,
+            repeatType: "reverse",
+          }}
+        />
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -48,9 +92,18 @@ export default function SmartLuggageFeatures() {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-gold to-gold-light bg-clip-text text-transparent">
-            WHY SMART LUGGAGE?
-          </h2>
+          <motion.span
+            className="inline-block px-4 py-1 mb-4 text-sm font-medium rounded-full bg-gold/10 text-gold border border-gold/20"
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            Smart Features
+          </motion.span>
+
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gold-gradient">WHY SMART LUGGAGE?</h2>
+
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Experience the future of travel with our innovative smart luggage features
           </p>
@@ -64,18 +117,25 @@ export default function SmartLuggageFeatures() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ y: -5 }}
               className="bg-background/50 backdrop-blur-sm p-6 rounded-lg border border-gold/10 hover:border-gold/30 transition-all duration-300 hover:shadow-lg group"
             >
-              <div className="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                <feature.icon className="h-6 w-6 text-gold" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2 text-gold">{feature.title}</h3>
+              <motion.div
+                className="w-14 h-14 rounded-full bg-gold/10 flex items-center justify-center mb-5 group-hover:bg-gold/20 transition-colors"
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                <feature.icon className="h-7 w-7 text-gold" />
+              </motion.div>
+
+              <h3 className="font-semibold text-lg mb-3 text-gold">{feature.title}</h3>
+
               <p className="text-muted-foreground">{feature.description}</p>
             </motion.div>
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   )
 }
 

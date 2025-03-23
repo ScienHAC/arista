@@ -47,9 +47,8 @@ export default function ParallaxSection({
       <div className="absolute inset-0 bg-black/50 z-0" />
       <div className="container mx-auto px-4 relative z-10">
         <div
-          className={`flex flex-col ${
-            reversed ? "items-end text-right" : "items-start text-left"
-          } max-w-xl ${reversed ? "ml-auto" : "mr-auto"}`}
+          className={`flex flex-col ${reversed ? "items-end text-right" : "items-start text-left"
+            } max-w-xl ${reversed ? "ml-auto" : "mr-auto"}`}
         >
           <motion.h2
             initial={{ opacity: 0, y: 20 }}

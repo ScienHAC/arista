@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 
 export default function ProductCardSkeleton() {
   return (
-    <Card className="overflow-hidden h-full">
+    <Card className="overflow-hidden h-full border-0 bg-white dark:bg-card">
       <div className="aspect-square bg-muted animate-pulse" />
       <CardContent className="p-4">
         <div className="h-3 w-16 bg-muted rounded animate-pulse mb-2" />

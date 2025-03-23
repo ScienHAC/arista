@@ -5,6 +5,7 @@ import { Trash2, Plus, Minus } from "lucide-react"
 import { useCart } from "@/hooks/use-cart"
 import { useToast } from "@/hooks/use-toast"
 import Link from "next/link"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function CartItems() {
   const { items, removeItem, updateQuantity, clearCart } = useCart()
@@ -25,26 +26,27 @@ export default function CartItems() {
 
   if (items.length === 0) {
     return (
-      <div className="bg-background border rounded-lg p-8 text-center">
-        <h2 className="text-xl font-semibold mb-4">Your cart is empty</h2>
-        <p className="text-muted-foreground mb-6">Looks like you haven&apos;t added any products to your cart yet.</p>
-        <Link href="/products">
-          <Button>Continue Shopping</Button>
-        </Link>
-      </div>
+      <Card>
+        <CardContent className="p-8 text-center">
+          <h2 className="text-xl font-semibold mb-4">Your cart is empty</h2>
+          <p className="text-muted-foreground mb-6">Looks like you haven't added any products to your cart yet.</p>
+          <Link href="/products">
+            <Button className="bg-gold text-black hover:bg-gold/90">Continue Shopping</Button>
+          </Link>
+        </CardContent>
+      </Card>
     )
   }
 
   return (
-    <div className="bg-background border rounded-lg overflow-hidden">
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold">Your Items ({items.reduce((acc, item) => acc + item.quantity, 0)})</h2>
-          <Button variant="ghost" size="sm" onClick={clearCart}>
-            Clear Cart
-          </Button>
-        </div>
-
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>Your Items ({items.reduce((acc, item) => acc + item.quantity, 0)})</CardTitle>
+        <Button variant="ghost" size="sm" onClick={clearCart}>
+          Clear Cart
+        </Button>
+      </CardHeader>
+      <CardContent>
         <AnimatePresence>
           {items.map((item) => (
             <motion.div
@@ -61,7 +63,7 @@ export default function CartItems() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <Link href={`/products/${item.id}`}>
-                    <h3 className="font-medium text-base hover:text-primary transition-colors line-clamp-1">
+                    <h3 className="font-medium text-base hover:text-gold transition-colors line-clamp-1">
                       {item.name}
                     </h3>
                   </Link>
@@ -101,8 +103,8 @@ export default function CartItems() {
             </motion.div>
           ))}
         </AnimatePresence>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   )
 }
 

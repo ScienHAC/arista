@@ -18,7 +18,7 @@ interface ComboPackage {
   items: string[]
 }
 
-const comboPackages: ComboPackage[] = [
+const comboPackages = [
   {
     id: 1,
     name: "Adventure Smart Combo: Aviator Luggage, Backpack, Wallet, Keychain and TechBag",
@@ -64,11 +64,6 @@ const comboPackages: ComboPackage[] = [
     items: ["Smart Luggage", "Wallet", "Passport Holder"],
   },
 ]
-
-// Function to format numbers consistently
-const formatNumber = (num: number): string => {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
 
 export default function ComboPackagesShowcase() {
   return (
@@ -141,9 +136,9 @@ export default function ComboPackagesShowcase() {
                   </div>
                 </div>
                 <div className="flex items-center mb-3">
-                  <span className="font-bold text-lg text-gold">₹{formatNumber(combo.price)}</span>
+                  <span className="font-bold text-lg text-gold">₹{combo.price.toLocaleString()}</span>
                   <span className="text-sm text-muted-foreground line-through ml-2">
-                    ₹{formatNumber(combo.originalPrice)}
+                    ₹{combo.originalPrice.toLocaleString()}
                   </span>
                 </div>
                 <Button
@@ -169,3 +164,4 @@ export default function ComboPackagesShowcase() {
     </section>
   )
 }
+
