@@ -53,7 +53,7 @@ type PlannerStep = "loading" | "results"
 export default function ItineraryPage() {
   const { formData } = useTravelForm()
   const [step, setStep] = useState<PlannerStep>("loading")
-  const [activeTab, setActiveTab] = useState("itinerary")
+  // const [activeTab, setActiveTab] = useState("itinerary")
   const [itineraryData, setItineraryData] = useState<ItineraryData | null>(null)
 
   useEffect(() => {
