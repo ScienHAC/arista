@@ -7,32 +7,18 @@ import { Plane, Package, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { EnhancedAIThinking } from "./enhanced-ai-thinking"
+import { useTravelForm } from "@/app/(ai)/ai/TravelFormContext"
 import Link from "next/link"
-
-type TravelFormData = {
-  destination: string
-  purpose: string
-  duration: number
-}
 
 type PlannerStep = "form" | "loading" | "results"
 
 export default function TravelPlanner() {
   const [step, setStep] = useState<PlannerStep>("form")
-  const [formData, setFormData] = useState<TravelFormData>({
-    destination: "",
-    purpose: "Vacation",
-    duration: 5,
-  })
+  const { formData, setFormData } = useTravelForm()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setStep("loading")
-    // Simulate AI processing
-    setTimeout(() => {
-      setStep("results")
-    }, 3000)
+    setStep("results")
   }
 
   const handleBack = () => {
@@ -117,7 +103,8 @@ export default function TravelPlanner() {
                     type="number"
                     min="1"
                     max="30"
-                    value={formData.duration}
+                    placeholder="e.g. 2"
+                    value={formData.duration || ""}
                     onChange={(e) =>
                       setFormData({
                         ...formData,
@@ -128,6 +115,30 @@ export default function TravelPlanner() {
                   />
                 </div>
 
+                <div className="space-y-2">
+                  <label
+                    htmlFor="traveler"
+                    className="text-sm font-medium text-foreground"
+                  >
+                    Traveler
+                  </label>
+                  <Select
+                    value={formData.traveler}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, traveler: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select traveler type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="solo">Solo</SelectItem>
+                      <SelectItem value="team">Team</SelectItem>
+                      <SelectItem value="family">Family</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
                 <Button
                   type="submit"
                   className="w-full bg-gradient-to-r from-arista-orange to-arista-gold hover:from-arista-orange/90 hover:to-arista-gold/90"
@@ -135,19 +146,6 @@ export default function TravelPlanner() {
                   Plan My Trip
                 </Button>
               </form>
-            </motion.div>
-          )}
-
-          {step === "loading" && (
-            <motion.div
-              key="loading"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="flex h-64 items-center justify-center p-8"
-            >
-              <EnhancedAIThinking isThinking={true} />
             </motion.div>
           )}
 

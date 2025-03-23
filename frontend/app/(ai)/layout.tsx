@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import Navbar from "@/components/aristaai/navbar"
 import Footer from "@/components/aristaai/footer"
 import BackgroundAnimation from "@/components/aristaai/background-animation"
+import { TravelFormProvider } from "./ai/TravelFormContext"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -23,12 +24,14 @@ export default function AristaLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <div className="relative min-h-screen overflow-hidden">
-            <BackgroundAnimation />
-            <Navbar />
-            <main className="relative z-10">{children}</main>
-            <Footer />
-          </div>
+          <TravelFormProvider>
+            <div className="relative min-h-screen overflow-hidden">
+              <BackgroundAnimation />
+              <Navbar />
+              <main className="relative z-10">{children}</main>
+              <Footer />
+            </div>
+          </TravelFormProvider>
         </ThemeProvider>
       </body>
     </html>
