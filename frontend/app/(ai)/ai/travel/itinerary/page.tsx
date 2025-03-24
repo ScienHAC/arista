@@ -76,7 +76,7 @@ export default function ItineraryPage() {
         const result = await response.json()
         console.log("result", result)
 
-        let suggestionsString = result.suggestions
+        let suggestionsString = result?.suggestions
         suggestionsString = suggestionsString
           .replace(/```json\n?/, "")
           .replace(/\n?```/, "")
@@ -86,11 +86,10 @@ export default function ItineraryPage() {
 
         setItineraryData(suggestionsJSON)
 
-        setTimeout(() => {
-          setStep("results")
-        }, 1000)
       } catch (error) {
         console.error("Error fetching itinerary:", error)
+      } finally {
+        setStep("results")
       }
     }
 

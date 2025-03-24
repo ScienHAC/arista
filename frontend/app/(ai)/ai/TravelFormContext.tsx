@@ -25,7 +25,7 @@ export const TravelFormProvider = ({ children }: { children: ReactNode }) => {
     const [formData, setFormData] = useState<FormData>({
         destination: "",
         purpose: "",
-        duration: 1,
+        duration: null as unknown as number,
         traveler: "",
     });
 

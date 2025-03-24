@@ -1,77 +1,62 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { ArrowLeft, Save, Share, Check } from "lucide-react"
+import { ArrowLeft, Save, Share, Check, Weight, Download, Trash } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { useTravelForm } from "../../TravelFormContext"
+import { EnhancedAIThinking } from "@/components/aristaai/enhanced-ai-thinking"
 
-interface PackingCategory {
-  title: string
-  items: string[]
+interface PackingItem {
+  name: string
+  weight_grams: number
 }
 
-const packingData: PackingCategory[] = [
-  {
-    title: "Essential Documents",
-    items: [
-      "Passport and visa",
-      "Flight tickets",
-      "Travel insurance",
-      "Credit cards and Japanese yen",
-      "International driving permit (if needed)",
-      "Hotel reservations",
-    ],
-  },
-  {
-    title: "Clothing",
-    items: [
-      "Lightweight, breathable clothes",
-      "One warm layer (jacket or sweater)",
-      "Comfortable walking shoes",
-      "Formal outfit for nice restaurants",
-      "Rain jacket or small umbrella",
-      "Socks and underwear",
-    ],
-  },
-  {
-    title: "Technology",
-    items: [
-      "Smartphone with travel apps",
-      "Camera",
-      "Power bank",
-      "Universal adapter",
-      "Chargers for all devices",
-      "Noise-cancelling headphones",
-    ],
-  },
-  {
-    title: "Toiletries",
-    items: [
-      "Toothbrush and toothpaste",
-      "Shampoo and conditioner",
-      "Deodorant",
-      "Sunscreen",
-      "Hand sanitizer",
-      "Basic medications",
-    ],
-  },
-  {
-    title: "Smart Travel Accessories",
-    items: [
-      "Arista Smart Wallet with GPS tracking",
-      "Arista Travel Backpack with anti-theft features",
-      "Portable Wi-Fi device",
-      "Smart luggage tag",
-      "Digital luggage scale",
-      "Travel pillow",
-    ],
-  },
-]
+interface PackingCategory {
+  category: string
+  items: PackingItem[]
+}
+
+interface PackingListData {
+  packing_list: PackingCategory[]
+}
+
+type PlannerStep = "loading" | "results"
 
 export default function PackingListPage() {
-  const [activeTab, setActiveTab] = useState("packing")
+  const { formData } = useTravelForm()
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({})
+  const [packingData, setPackingData] = useState<PackingListData | null>(null)
+  const [step, setStep] = useState<PlannerStep>("loading")
+
+  useEffect(() => {
+    const fetchPackingList = async () => {
+      setStep("loading")
+      try {
+        const response = await fetch("https://aristaai.onrender.com/generate_packing_list", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            destination: formData.destination,
+            purpose: formData.purpose,
+            duration: formData.duration,
+            traveler: formData.traveler,
+          }),
+        })
+
+        if (!response.ok) throw new Error("Failed to fetch packing list")
+        const data = await response.json()
+        setPackingData(data)
+      } catch (error) {
+        console.error("Error fetching packing list:", error)
+      } finally {
+        setStep("results")
+      }
+    }
+
+    fetchPackingList()
+  }, [formData])
 
   const toggleItem = (item: string) => {
     setCheckedItems((prev) => ({
@@ -79,6 +64,20 @@ export default function PackingListPage() {
       [item]: !prev[item],
     }))
   }
+
+  const calculateTotalWeight = () => {
+    if (!packingData) return 0
+    return packingData.packing_list.reduce(
+      (total, category) => total + category.items?.reduce(
+        (sum, item) => sum + (!checkedItems[item.name] ? item.weight_grams : 0), 0
+      ),
+      0
+    )
+  }
+
+  const totalWeight = calculateTotalWeight()
+  const totalItems = packingData?.packing_list.reduce((acc, category) => acc + category.items.length, 0) || 0
+  const checkedItemsCount = Object.values(checkedItems).filter(Boolean).length
 
   return (
     <div className="pt-24 pb-16">
@@ -88,80 +87,63 @@ export default function PackingListPage() {
             <ArrowLeft className="mr-2 h-4 w-4" />
             <span>Back to form</span>
           </Link>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" className="flex items-center gap-1">
-              <Save className="h-4 w-4" />
-              <span>Save</span>
-            </Button>
-            <Button variant="outline" size="sm" className="flex items-center gap-1">
-              <Share className="h-4 w-4" />
-              <span>Share</span>
-            </Button>
-          </div>
         </div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <h1 className="text-3xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-arista-orange via-arista-gold to-arista-silver">
-            Your 7-Day Trip to Japan
-          </h1>
-          <p className="text-muted-foreground mb-6">
-            AI-generated travel plan for 2 travelers • Vacation • Medium budget
-          </p>
+        {step === "loading" && (
+          <motion.div
+            key="loading"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="flex h-64 items-center justify-center p-8"
+          >
+            <EnhancedAIThinking isThinking={true} />
+          </motion.div>
+        )}
+        {step === "results" && packingData && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <h1 className="text-3xl font-bold mb-2">Your Packing List</h1>
 
-          <div className="flex mb-8 border-b">
-            <button
-              className={`px-6 py-3 font-medium ${activeTab === "itinerary"
-                  ? "text-arista-orange border-b-2 border-arista-orange"
-                  : "text-muted-foreground hover:text-foreground"
-                }`}
-              onClick={() => setActiveTab("itinerary")}
-            >
-              <Link href="/ai/travel/itinerary">Itinerary</Link>
-            </button>
-            <button
-              className={`px-6 py-3 font-medium ${activeTab === "packing"
-                  ? "text-arista-orange border-b-2 border-arista-orange"
-                  : "text-muted-foreground hover:text-foreground"
-                }`}
-              onClick={() => setActiveTab("packing")}
-            >
-              Packing List
-            </button>
-          </div>
-
-          <div className="space-y-8">
-            {packingData.map((category, index) => (
-              <div key={index} className="p-6 rounded-xl bg-card shadow-sm">
-                <h3 className="text-xl font-bold mb-4 text-arista-orange">{category.title}</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {category.items.map((item, itemIndex) => (
-                    <div
-                      key={itemIndex}
-                      className="flex items-center gap-3 cursor-pointer"
-                      onClick={() => toggleItem(item)}
-                    >
-                      <div
-                        className={`w-5 h-5 rounded flex items-center justify-center ${checkedItems[item] ? "bg-arista-orange text-white" : "border border-muted-foreground"
-                          }`}
-                      >
-                        {checkedItems[item] && <Check className="h-3 w-3" />}
-                      </div>
-                      <span className={checkedItems[item] ? "line-through text-muted-foreground" : ""}>{item}</span>
-                    </div>
-                  ))}
-                </div>
+            <div className="p-4 rounded-xl bg-muted mb-6 flex justify-between items-center">
+              <div>
+                <p className="text-sm text-muted-foreground">Packing Progress</p>
+                <span className="font-medium">{checkedItemsCount} of {totalItems} items packed</span>
               </div>
-            ))}
-          </div>
+              <div className="flex items-center gap-2">
+                <Weight className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm">Total Weight: <span className="font-medium">{(totalWeight / 1000).toFixed(1)} kg</span></span>
+              </div>
+            </div>
 
-          <div className="mt-8 flex justify-center">
-            <Button className="bg-gradient-to-r from-arista-orange to-arista-gold hover:from-arista-orange/90 hover:to-arista-gold/90">
-              Download Packing List
-            </Button>
-          </div>
-        </motion.div>
+            <div className="space-y-8">
+              {packingData?.packing_list.map((category, index) => (
+                <div key={index} className="p-6 rounded-xl bg-card shadow-sm border">
+                  <h3 className="text-xl font-bold mb-4 text-arista-orange">{category.category}</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {category.items.map((item, itemIndex) => (
+                      <div key={itemIndex} className="flex items-center gap-3 cursor-pointer" onClick={() => toggleItem(item.name)}>
+                        <div className={`w-5 h-5 rounded ${checkedItems[item.name] ? "bg-arista-orange text-white" : "border border-muted-foreground"}`}>
+                          {checkedItems[item.name] && <Check className="h-3 w-3" />}
+                        </div>
+                        <span className={checkedItems[item.name] ? "line-through text-muted-foreground" : ""}>{item.name}</span>
+                        <span className="text-xs text-muted-foreground ml-auto">{(item.weight_grams / 1000).toFixed(1)} kg</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 flex justify-center">
+              <Button className="bg-arista-orange flex items-center gap-2">
+                <Download className="h-4 w-4" />
+                Download Packing List
+              </Button>
+            </div>
+          </motion.div>
+        )}
       </div>
     </div>
   )
 }
-
