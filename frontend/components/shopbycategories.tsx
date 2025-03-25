@@ -7,22 +7,22 @@ import Link from 'next/link';
 const categories = [
     {
         id: 1,
-        name: 'Smart Wallets',
-        image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=800&q=80',
-        description: 'Secure and innovative smart wallets'
+        name: 'Smart Luggage',
+        image: '/images/smart-luggage.jpg',
+        description: 'Revolutionary smart luggage solutions'
     },
     {
         id: 2,
         name: 'Smart Bags',
-        image: 'https://images.unsplash.com/photo-1546938576-6e6a64f317cc?auto=format&fit=crop&w=800&q=80',
+        image: '/images/smart-bags.jpg',
         description: 'Tech-enabled bags for modern lifestyle'
     },
     {
         id: 3,
-        name: 'Smart Luggage',
-        image: 'https://images.unsplash.com/photo-1565026057447-bc90a3dceb87?auto=format&fit=crop&w=800&q=80',
-        description: 'Revolutionary smart luggage solutions'
-    }
+        name: 'Smart Wallets',
+        image: '/images/smart-wallets.jpg',
+        description: 'Secure and innovative smart wallets'
+    },
 ];
 
 export default function Categories() {
