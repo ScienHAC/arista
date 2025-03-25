@@ -8,19 +8,19 @@ const categories = [
     {
         id: 1,
         name: 'Smart Luggage',
-        image: '/images/smart-luggage.jpg',
+        image: '/assets/smart-luggage.jpg',
         description: 'Revolutionary smart luggage solutions'
     },
     {
         id: 2,
         name: 'Smart Bags',
-        image: '/images/smart-bags.jpg',
+        image: '/assets/smart-bags.jpg',
         description: 'Tech-enabled bags for modern lifestyle'
     },
     {
         id: 3,
         name: 'Smart Wallets',
-        image: '/images/smart-wallets.jpg',
+        image: '/assets/smart-wallets.jpg',
         description: 'Secure and innovative smart wallets'
     },
 ];
