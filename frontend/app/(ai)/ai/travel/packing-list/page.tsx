@@ -115,7 +115,18 @@ export default function PackingListPage() {
                 <span className="text-sm">Total Weight: <span className="font-medium">{(totalWeight / 1000).toFixed(1)} kg</span></span>
               </div>
             </div>
-
+            {/* <h1 className="text-3xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-arista-orange via-arista-gold to-arista-silver">
+      Your {formData.duration}-Day Trip to {formData.destination}
+    </h1>
+    <p className="text-muted-foreground mb-2">
+      AI-generated travel plan for {formData.traveler} • {formData.purpose}
+    </p>
+    <div className="flex items-center gap-2 mb-6">
+      <Weight className="h-4 w-4 text-muted-foreground" />
+      <span className="text-sm text-muted-foreground">
+        Total luggage weight: {(totalWeight / 1000).toFixed(1)} kg • {Math.round(totalWeight / 1000 * 2.2)} lbs
+      </span>
+    </div> */}
             <div className="space-y-8">
               {packingData?.packing_list.map((category, index) => (
                 <div key={index} className="p-6 rounded-xl bg-card shadow-sm border">
