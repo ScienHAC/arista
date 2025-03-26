@@ -12,6 +12,7 @@ import { showcaseProducts } from "@/data/products"
 import { SpecialOffers } from "@/components/SpecialOffer"
 import { WhyChooseUs } from "@/components/whychooseus"
 import FeatureBanner from "@/components/featureBanner"
+import AristaChatbot from "@/components/chatbot/arista-chatbot"
 // Featured product data
 const featuredProduct1 = {
   id: 101,
@@ -73,6 +74,7 @@ export default function Home() {
         <TestimonialCarousel />
         <CTASection />
         <Newsletter />
+        <AristaChatbot />
       </div>
     </main>
   )
