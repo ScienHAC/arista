@@ -1,31 +1,60 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Sparkles, Send, Plane, Package } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { EnhancedAIThinking } from "./enhanced-ai-thinking"
+import { EnhancedAIChatThinking } from "./enhanced-ai-chat-thinking"
 import Link from "next/link"
 
 export default function HeroChatbox() {
   const [query, setQuery] = useState("")
   const [isThinking, setIsThinking] = useState(false)
   const [showResults, setShowResults] = useState(false)
+  const [apiResponse, setApiResponse] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!query.trim()) return
 
     setIsThinking(true)
-    // Simulate AI processing
-    setTimeout(() => {
-      setIsThinking(false)
+    setShowResults(false)
+
+    try {
+      // Transform the query into the required JSON format
+      const requestData = {
+        query: query
+      }
+
+      // Send the request to the API using fetch
+      const response = await fetch('https://aristaai.onrender.com/chatai', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData)
+      })
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+
+      const data = await response.json()
+
+      // Set the response and show results
+      setApiResponse(data.response)
       setShowResults(true)
-    }, 3000)
+    } catch (error) {
+      console.error('API request failed:', error)
+      // Optionally handle error state
+      setApiResponse('Sorry, something went wrong. Please try again.')
+      setShowResults(true)
+    } finally {
+      setIsThinking(false)
+    }
   }
 
   // Focus input on mount
@@ -104,7 +133,7 @@ export default function HeroChatbox() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <EnhancedAIThinking isThinking={isThinking} />
+            <EnhancedAIChatThinking isThinking={isThinking} />
           </motion.div>
         )}
 
@@ -118,7 +147,7 @@ export default function HeroChatbox() {
             className="glassmorphism rounded-xl p-6"
           >
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold">Your Japan Trip</h3>
+              <h3 className="text-xl font-bold">AI Response</h3>
               <Button
                 variant="ghost"
                 size="sm"
@@ -132,25 +161,18 @@ export default function HeroChatbox() {
             </div>
 
             <p className="mb-4 text-muted-foreground">
-              I've created a personalized 7-day itinerary for your trip to Japan. Would you like to see the full
-              itinerary or a packing list?
+              {apiResponse || "No response received."}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 className="flex-1 bg-gradient-to-r from-arista-orange to-arista-gold hover:from-arista-orange/90 hover:to-arista-gold/90"
-                asChild
+                onClick={() => {
+                  setShowResults(false)
+                  setQuery("")
+                }}
               >
-                <Link href="/ai/travel/itinerary">
-                  <Plane className="mr-2 h-4 w-4" />
-                  View Itinerary
-                </Link>
-              </Button>
-              <Button variant="outline" className="flex-1" asChild>
-                <Link href="/ai/travel/packing-list">
-                  <Package className="mr-2 h-4 w-4" />
-                  View Packing List
-                </Link>
+                Try Another Query
               </Button>
             </div>
           </motion.div>
@@ -159,4 +181,3 @@ export default function HeroChatbox() {
     </div>
   )
 }
-

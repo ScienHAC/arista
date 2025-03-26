@@ -44,10 +44,10 @@ export default function ProductShowcase({
                                         <Star
                                             key={i}
                                             className={`w-5 h-5 ${i < Math.floor(rating)
-                                                    ? "fill-amber-400 text-amber-400"
-                                                    : i < rating
-                                                        ? "fill-amber-400/50 text-amber-400"
-                                                        : "fill-gray-200 text-gray-200 dark:fill-gray-700 dark:text-gray-700"
+                                                ? "fill-amber-400 text-amber-400"
+                                                : i < rating
+                                                    ? "fill-amber-400/50 text-amber-400"
+                                                    : "fill-gray-200 text-gray-200 dark:fill-gray-700 dark:text-gray-700"
                                                 }`}
                                         />
                                     ))}
@@ -70,6 +70,7 @@ export default function ProductShowcase({
                                 width={500}
                                 height={300}
                                 className="object-contain"
+                                unoptimized
                             />
                         </div>
                     </div>
