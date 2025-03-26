@@ -25,13 +25,13 @@ const slides = [
     link: "/products/wallets",
   },
   {
-    id: 3,
-    title: "Travel Accessories for the Digital Age",
-    description: "Enhance your journey with our range of smart accessories designed for the modern traveler",
-    image: "https://images.unsplash.com/photo-1523381294911-8d3cead13475?q=80&w=1920&auto=format&fit=crop",
-    cta: "Explore features",
-    ctaSecondary: "Watch video",
-    link: "/products/accessories",
+    "id": 3,
+    "title": "Win a Free Trip to Malaysia!",
+    "description": "Purchase any smart product & your journey awaits! Stand a chance to win an exciting trip.",
+    "image": "/assets/Malaysia-Banner.png?q=80&w=1920&auto=format&fit=crop",
+    "cta": "Explore Now",
+    "ctaSecondary": "Learn More",
+    "link": "/promo/malaysia-trip"
   },
 ]
 
