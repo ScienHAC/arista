@@ -156,7 +156,6 @@ export default function AristaChatbot() {
                 isTyping: true
             }])
 
-            // Add follow-up suggestions if available
             if (data.suggestions?.length > 0) {
                 setTimeout(() => {
                     setMessages((prev) => [...prev, {
@@ -193,7 +192,6 @@ export default function AristaChatbot() {
                 <MessageCircle size={24} />
             </motion.button>
 
-
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -203,10 +201,15 @@ export default function AristaChatbot() {
                         transition={{ duration: 0.2 }}
                         className="fixed bottom-4 right-4 w-full md:w-[400px] h-[600px] chat-container rounded-2xl shadow-2xl flex flex-col overflow-hidden z-40"
                     >
-                        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full neural-bg" />
+                        <canvas
+                            ref={canvasRef}
+                            className="absolute inset-0 w-full h-full neural-bg z-[2]"
+                        />
+
+                        <div className="absolute inset-0 bg-background/40 backdrop-blur-sm z-[3]" />
 
                         <motion.div
-                            className="bg-gradient-to-r from-arista-orange to-arista-gold p-4 flex justify-between items-center relative z-50"
+                            className="bg-gradient-to-r from-arista-orange to-arista-gold p-4 flex justify-between items-center relative z-10"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.1 }}
@@ -248,8 +251,8 @@ export default function AristaChatbot() {
                                         className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}
                                     >
                                         <div
-                                            className={`message-bubble max-w-[80%] p-3 rounded-2xl ${message.isBot
-                                                ? "bg-gradient-to-br from-arista-orange/10 to-arista-gold/10 text-foreground"
+                                            className={`message-bubble max-w-[80%] p-3 rounded-2xl shadow-lg ${message.isBot
+                                                ? "bg-background/70 text-foreground backdrop-blur-sm border border-border/50"
                                                 : "bg-gradient-to-r from-arista-orange to-arista-gold text-white"
                                                 }`}
                                         >
@@ -269,7 +272,7 @@ export default function AristaChatbot() {
 
                         <motion.form
                             onSubmit={handleSubmit}
-                            className="p-4 border-t border-white/10 relative z-10"
+                            className="p-4 border-t border-border/50 bg-background/50 backdrop-blur-md relative z-10"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 }}
@@ -280,11 +283,11 @@ export default function AristaChatbot() {
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
                                     placeholder="Ask me about Arista products..."
-                                    className="flex-1 p-3 rounded-xl bg-white/10 border border-white/20 text-foreground placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-arista-orange/50"
+                                    className="flex-1 p-3 rounded-xl bg-background/80 border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-arista-orange/50"
                                 />
                                 <motion.button
                                     type="submit"
-                                    className="p-3 rounded-xl bg-gradient-to-r from-arista-orange to-arista-gold text-white"
+                                    className="p-3 rounded-xl bg-gradient-to-r from-arista-orange to-arista-gold text-white shadow-lg"
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                 >
