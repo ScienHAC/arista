@@ -44,11 +44,11 @@ export default function Home() {
       <div className="w-full space-y-8 md:space-y-16 py-8 md:py-16">
         <Shopbycategories />
         <FeaturedProducts />
-        <WhyChooseUs />
+        <FeaturesSection />
         <FeaturedProduct product={featuredProduct1} />
         <FeaturedProduct product={featuredProduct2} reversed={true} />
         {/* Product Showcase Sections */}
-        {showcaseProducts.map((product, index) => (
+        {/* {showcaseProducts.map((product, index) => (
           <ProductShowcase
             key={product.id}
             badge={product.badge}
@@ -61,6 +61,33 @@ export default function Home() {
             imageAlt={product.imageAlt}
             reversed={index % 2 !== 0}
           />
+        ))} */}
+        {/* {showcaseProducts.map((product, index) => (
+          <ProductShowcase
+            key={product.id}
+            badge={product.badge}
+            title={product.title}
+            description={product.description}
+            // rating={product.rating}
+            reviews={product.reviews}
+            imageSrc={product.imageSrc}
+            imageAlt={product.imageAlt}
+            reversed={index % 2 !== 0}
+            productId={product.id}
+          />
+        ))} */}
+        {showcaseProducts.map((product, index) => (
+          <ProductShowcase
+            key={product.id}
+            badge={product.badge}
+            title={product.title}
+            description={product.description}
+            imageSrc={product.imageSrc}
+            imageAlt={product.imageAlt}
+            reversed={index % 2 !== 0}
+            productId={product.id}
+            relatedProducts={product.relatedProducts}
+          />
         ))}
         <FeatureBanner
           title="Travel Smarter, Not Harder"
@@ -70,7 +97,7 @@ export default function Home() {
           buttonLink="/categories/luggage" />
         <SpecialOffers />
         <AnimatedCompanyLogos />
-        <FeaturesSection />
+        <WhyChooseUs />
         <TestimonialCarousel />
         <CTASection />
         <Newsletter />
